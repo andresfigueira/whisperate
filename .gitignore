@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# IDE - VSCode
+/.vscode
+/.idea
+
+# Misc
+.DS_Store
+
+# Env
+.env*
+
+# Log
+*.log
