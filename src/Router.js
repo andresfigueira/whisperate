@@ -1,4 +1,4 @@
-const { default: UserController } = require('../user/UserController');
+const { default: UserController } = require('./user/UserController');
 const express = require('express');
 const router = express.Router();
 
@@ -13,7 +13,7 @@ class Router {
     }
 
     setRoutes() {
-        router.get('/login', UserController.login);
+        router.get('/sign-up', UserController.signUp);
     }
 }
 

@@ -1,7 +1,7 @@
 require('./config/env.config');
 require('./config/db.config');
 const express = require('express');
-const { default: Router } = require('./config/routes.config');
+const { default: Router } = require('./Router');
 
 const app = express();
 const port = process.env.PORT;

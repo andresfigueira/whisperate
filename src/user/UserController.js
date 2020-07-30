@@ -1,7 +1,18 @@
+const { default: UserModel } = require("./UserModel");
+
 const UserController = {
-    login: (req, res) => {
-        console.log(req.method);
-        res.send('Test');
+    signUp: (req, res) => {
+        const user = new UserModel({
+            first_name: 'Andres',
+            last_name: 'Figueira',
+            email: 'Figueira',
+        });
+
+        user.save().then(response => {
+            res.send(response);
+        }).catch(error => {
+            res.send(error);
+        })
     }
 }
 
