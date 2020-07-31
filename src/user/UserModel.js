@@ -1,5 +1,6 @@
 const { default: mongoose } = require('../config/db.config');
 const validator = require('validator');
+const { default: PasswordCryptService } = require('./services/PasswordCryptService');
 
 const UserSchema = new mongoose.Schema({
     _id: {
@@ -32,17 +33,26 @@ const UserSchema = new mongoose.Schema({
         required: 'Required',
     },
     country: {
-        type: Date,
+        type: String,
     },
 }, {
-    timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+    },
 });
 
 UserSchema.pre('save', async function (next) {
     const user = this;
 
-    console.log('before saving');
-    
+    if (this.isModified('password')) {
+        const crypter = new PasswordCryptService();
+        const encryptedPassword = crypter.encrypt(this.password);
+        if (!encryptedPassword)
+            throw new Error('Error encrypting password');
+        this.set('password', encryptedPassword);
+    }
+
     next();
 });
 
