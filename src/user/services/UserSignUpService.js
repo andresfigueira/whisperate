@@ -1,4 +1,4 @@
-const UserModel = require("../UserModel");
+const UserModel = require('../UserModel');
 
 class UserSignUpService {
     constructor(
@@ -30,10 +30,10 @@ class UserSignUpService {
                 birthday: this.birthday,
                 country: this.country,
             });
-    
-            user.save().then(response => {
+
+            user.save().then((response) => {
                 resolve(response);
-            }).catch(error => {
+            }).catch((error) => {
                 reject(error);
             });
         });

@@ -1,4 +1,4 @@
-const CipherService = require("../../shared/services/cipher/CipherService");
+const CipherService = require('../../shared/services/cipher/CipherService');
 
 class SessionHandlerService {
     constructor(user, res) {
@@ -7,18 +7,20 @@ class SessionHandlerService {
     }
 
     start() {
-        return new Promise(async (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             const oneWeekInSeconds = 7 * 24 * 60 * 60;
             const cipher = new CipherService();
-            const encryptedUser = await cipher.encrypt(JSON.stringify(this.user));
+            cipher.encrypt(JSON.stringify(this.user)).then((encryptedUser) => {
+                this.res.cookie('whisperate-session', encryptedUser, {
+                    maxAge: oneWeekInSeconds,
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                });
 
-            this.res.cookie('whisperate-session', encryptedUser, {
-                maxAge: oneWeekInSeconds,
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
+                resolve(this.user);
+            }).catch((error) => {
+                reject(error);
             });
-
-            resolve(this.user);
         });
     }
 }

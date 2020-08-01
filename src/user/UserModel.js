@@ -1,5 +1,5 @@
-const mongoose = require('../config/db/db.config');
 const validator = require('validator');
+const mongoose = require('../config/db/db.config');
 const CipherService = require('../shared/services/cipher/CipherService');
 
 const UserSchema = new mongoose.Schema({
@@ -21,7 +21,7 @@ const UserSchema = new mongoose.Schema({
         unique: true,
         validate: {
             validator: (value) => validator.isEmail(value),
-            message: 'Must be an email'
+            message: 'Must be an email',
         },
     },
     password: {
@@ -42,14 +42,10 @@ const UserSchema = new mongoose.Schema({
     },
 });
 
-UserSchema.pre('save', async function (next) {
-    const user = this;
-
+UserSchema.pre('save', async (next) => {
     if (this.isModified('password')) {
-        const cipher = new CipherService();
-        const encryptedPassword = cipher.encrypt(this.password);
-        if (!encryptedPassword)
-            throw new Error('Error encrypting password');
+        const encryptedPassword = CipherService.encrypt(this.password);
+        if (!encryptedPassword) { throw new Error('Error encrypting password'); }
         this.set('password', encryptedPassword);
     }
 

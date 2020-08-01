@@ -1,11 +1,7 @@
-const UserController = require('./UserController');
 const express = require('express');
-const router = express.Router();
+const UserController = require('./UserController');
 
-function middle(req, res, next) {
-    console.log('Time:', Date.now());
-    next();
-}
+const router = express.Router();
 
 function UserRouter(app) {
     app.use('', router);

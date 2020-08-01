@@ -1,11 +1,10 @@
 class Response {
-    static error(message = 'Error', error = undefined) {
-        let response = {
-            message,
+    static error(message = '', error = undefined) {
+        const response = {
+            message: `Error: ${message}`,
         };
 
-        if (error)
-            response.error = error;
+        if (error) { response.error = error; }
 
         return response;
     }
