@@ -4,6 +4,9 @@ class Assert {
     constructor(params, constraints) {
         this.params = params;
         this.constraints = constraints;
+        this.errors = {};
+        this.valid = null;
+        this.invalidMessage = 'Invalid data';
     }
 
     isValid() {
@@ -21,18 +24,27 @@ class Assert {
             const value = this.params[name];
 
             if (required && (value === undefined || value === null || value === '')) {
-                errors[name].required = requiredMessage || 'Required';
+                errors[name] = {
+                    errorMessage: requiredMessage || 'Required',
+                    required: requiredMessage || 'Required',
+                };
             } else if (pattern && !pattern.test(value)) {
-                errors[name].pattern = patternMessage || 'Incorrect format';
+                errors[name] = {
+                    errorMessage: patternMessage || 'Incorrect format',
+                    pattern: patternMessage || 'Incorrect format',
+                };
             } else if (validate && !validate(value)) {
-                errors[name].validate = validateMessage || 'Invalid';
+                errors[name] = {
+                    errorMessage: validateMessage || 'Invalid',
+                    validate: validateMessage || 'Invalid',
+                };
             }
         });
 
-        return {
-            errors,
-            valid: ObjectHelper.isEmpty(errors),
-        };
+        this.errors = errors;
+        this.valid = ObjectHelper.isEmpty(errors);
+
+        return this.valid;
     }
 }
 

@@ -45,10 +45,8 @@ const UserController = {
             },
         });
 
-        console.log(assert.isValid());
-        return;
-        if (!req.body.identifier || !req.body.password) {
-            return res.status(400).send(Response.error('Email and password required'));
+        if (!assert.isValid()) {
+            return res.status(400).send(Response.error(assert.invalidMessage, assert.errors));
         }
 
         const { identifier, password } = req.body;
@@ -60,7 +58,7 @@ const UserController = {
 
             res.status(200).send(response);
         }).catch((error) => {
-            res.status(401).send(Response.error('Error', error));
+            res.status(error.status || 500).send(Response.error(error.message));
         });
 
         return true;

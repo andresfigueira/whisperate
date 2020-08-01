@@ -1,7 +1,7 @@
 class Response {
     static error(message = '', error = undefined) {
         const response = {
-            message: `Error: ${message}`,
+            message,
         };
 
         if (error) { response.error = error; }
