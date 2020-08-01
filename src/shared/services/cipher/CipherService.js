@@ -1,23 +1,23 @@
-class PasswordCryptService {
-    encrypt(password, saltRounds = 10) {
+class CipherService {
+    encrypt(data, saltRounds = 10) {
         return new Promise((resolve, reject) => {
             const bcrypt = require('bcrypt');
 
-            return bcrypt.hash(password, saltRounds)
+            return bcrypt.hash(data, saltRounds)
                 .then(resolve)
                 .catch(reject);
         });
     }
 
-    compare(password, hash) {
+    compare(data, hash) {
         return new Promise((resolve, reject) => {
             const bcrypt = require('bcrypt');
 
-            return bcrypt.compare(password, hash)
+            return bcrypt.compare(data, hash)
                 .then(resolve)
                 .catch(reject);
         });
     }
 }
 
-module.exports = PasswordCryptService;
+module.exports = CipherService;

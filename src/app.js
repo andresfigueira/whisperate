@@ -1,14 +1,17 @@
-require('./config/env.config');
-require('./config/db.config');
+require('./config/env/env.config');
+require('./config/db/db.config');
 const express = require('express');
-const router = require('./router');
+const Router = require('./routes/router');
 const cors = require('cors');
+const chalk = require('chalk');
 
 const app = express();
 const port = process.env.PORT || 8080;
-// app.use(cors);
-router(app);
+
+app.use(cors());
+
+Router(app);
 
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+    console.log(chalk.inverse.white(`\nServer running on port ${port}\n`));
 });

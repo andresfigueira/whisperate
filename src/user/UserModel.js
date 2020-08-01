@@ -1,6 +1,6 @@
-const mongoose = require('../config/db.config');
+const mongoose = require('../config/db/db.config');
 const validator = require('validator');
-const PasswordCryptService = require('./services/PasswordCryptService');
+const CipherService = require('../shared/services/cipher/CipherService');
 
 const UserSchema = new mongoose.Schema({
     _id: {
@@ -46,8 +46,8 @@ UserSchema.pre('save', async function (next) {
     const user = this;
 
     if (this.isModified('password')) {
-        const crypter = new PasswordCryptService();
-        const encryptedPassword = crypter.encrypt(this.password);
+        const cipher = new CipherService();
+        const encryptedPassword = cipher.encrypt(this.password);
         if (!encryptedPassword)
             throw new Error('Error encrypting password');
         this.set('password', encryptedPassword);

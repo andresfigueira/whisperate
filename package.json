@@ -2,9 +2,11 @@
   "name": "whisperate",
   "version": "1.0.0",
   "description": "Whisperate",
-  "main": "src/app.js",
+  "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=local nodemon"
+    "start": "cross-env NODE_ENV=local nodemon",
+    "start:development": "cross-env NODE_ENV=development nodemon",
+    "start:production": "cross-env NODE_ENV=production nodemon"
   },
   "repository": {},
   "keywords": [],

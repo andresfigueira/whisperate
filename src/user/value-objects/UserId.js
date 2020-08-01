@@ -1,4 +1,4 @@
-const Mongoose = require("../../config/db.config");
+const Mongoose = require("../../config/db/db.config");
 
 function UserId() {
     return Mongoose.Types.ObjectId();

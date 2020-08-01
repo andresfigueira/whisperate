@@ -1,5 +1,5 @@
 const UserModel = require("../UserModel");
-const PasswordCryptService = require("./PasswordCryptService");
+const CipherService = require("../../shared/services/cipher/CipherService");
 
 class UserLoginService {
     constructor(identifier, password) {
@@ -14,8 +14,8 @@ class UserLoginService {
             if (!user)
                 reject(null);
 
-            const crypter = new PasswordCryptService();
-            const match = await crypter.compare(this.password, user.password);
+            const cipher = new CipherService();
+            const match = await cipher.compare(this.password, user.password);
 
             if (!match)
                 reject(null);
