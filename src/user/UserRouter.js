@@ -1,4 +1,4 @@
-const { default: UserController } = require('./UserController');
+const UserController = require('./UserController');
 const express = require('express');
 const router = express.Router();
 
@@ -9,4 +9,4 @@ function UserRouter(app) {
     router.post('/v1/login', UserController.login);
 }
 
-exports.default = UserRouter;
+module.exports = UserRouter;

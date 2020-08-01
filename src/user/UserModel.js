@@ -1,6 +1,6 @@
-const { default: mongoose } = require('../config/db.config');
+const mongoose = require('../config/db.config');
 const validator = require('validator');
-const { default: PasswordCryptService } = require('./services/PasswordCryptService');
+const PasswordCryptService = require('./services/PasswordCryptService');
 
 const UserSchema = new mongoose.Schema({
     _id: {
@@ -57,4 +57,4 @@ UserSchema.pre('save', async function (next) {
 });
 
 const UserModel = mongoose.model('User', UserSchema);
-exports.default = UserModel;
+module.exports = UserModel;

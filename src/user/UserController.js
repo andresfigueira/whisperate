@@ -1,6 +1,6 @@
-const { default: UserSignUpService } = require("./services/UserSignUpService");
-const { default: UserId } = require("./value-objects/UserId");
-const { default: UserLoginService } = require("./services/UserLoginService");
+const UserSignUpService = require("./services/UserSignUpService");
+const UserId = require("./value-objects/UserId");
+const UserLoginService = require("./services/UserLoginService");
 
 const UserController = {
     signUp: (req, res) => {
@@ -63,4 +63,4 @@ const UserController = {
     }
 }
 
-exports.default = UserController;
+module.exports = UserController;

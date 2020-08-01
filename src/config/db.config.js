@@ -19,4 +19,4 @@ mongoose.connection.on('error', () => {
     throw new Error('Unable to connect to database')
 });
 
-exports.default = mongoose;
+module.exports = mongoose;

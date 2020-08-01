@@ -1,5 +1,5 @@
-const { default: UserModel } = require("../UserModel");
-const { default: PasswordCryptService } = require("./PasswordCryptService");
+const UserModel = require("../UserModel");
+const PasswordCryptService = require("./PasswordCryptService");
 
 class UserLoginService {
     constructor(identifier, password) {
@@ -25,4 +25,4 @@ class UserLoginService {
     }
 }
 
-exports.default = UserLoginService;
+module.exports = UserLoginService;

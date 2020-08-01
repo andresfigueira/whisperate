@@ -6,4 +6,4 @@ const env = {
 
 env.init();
 
-exports.default = env;
+module.exports = env;

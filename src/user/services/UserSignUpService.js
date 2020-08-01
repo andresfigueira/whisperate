@@ -1,4 +1,4 @@
-const { default: UserModel } = require("../UserModel");
+const UserModel = require("../UserModel");
 
 class UserSignUpService {
     constructor(
@@ -40,4 +40,4 @@ class UserSignUpService {
     }
 }
 
-exports.default = UserSignUpService;
+module.exports = UserSignUpService;

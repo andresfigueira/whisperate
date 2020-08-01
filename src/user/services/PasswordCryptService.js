@@ -20,4 +20,4 @@ class PasswordCryptService {
     }
 }
 
-exports.default = PasswordCryptService;
+module.exports = PasswordCryptService;

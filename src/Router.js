@@ -1,5 +1,5 @@
 const express = require('express');
-const { default: UserRouter } = require('./user/UserRouter');
+const UserRouter = require('./user/UserRouter');
 const chalk = require('chalk');
 
 function router(app) {
@@ -31,4 +31,4 @@ function middlewares(app) {
     });
 }
 
-exports.default = router;
+module.exports = router;
