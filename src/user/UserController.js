@@ -1,4 +1,4 @@
-const UserSignUpService = require('./services/UserSignUpService');
+const UserCreateService = require('./services/UserCreateService');
 const UserId = require('./value-objects/UserId');
 const UserLoginService = require('./services/UserLoginService');
 const SessionHandlerService = require('../session/services/SessionHandlerService');
@@ -6,7 +6,7 @@ const Response = require('../../core/response/Response');
 const Assert = require('../shared/services/assert/Assert');
 
 const UserController = {
-    signUp: (req, res) => {
+    create: (req, res) => {
         const {
             first_name: firstName,
             last_name: lastName,
@@ -17,7 +17,7 @@ const UserController = {
         } = req.body;
         const id = UserId();
 
-        const user = new UserSignUpService(
+        const user = new UserCreateService(
             id,
             firstName,
             lastName,
