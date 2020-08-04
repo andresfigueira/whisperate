@@ -4,23 +4,24 @@ class SessionHandlerService {
     constructor(user, res) {
         this.user = user;
         this.res = res;
+        this.cookieName = 'whisperate-session';
     }
 
-    start() {
-        return new Promise((resolve, reject) => {
-            const oneWeekInSeconds = 7 * 24 * 60 * 60;
-            CipherService.encrypt(JSON.stringify(this.user)).then((encryptedUser) => {
-                this.res.cookie('whisperate-session', encryptedUser, {
-                    maxAge: oneWeekInSeconds,
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === 'production',
-                });
+    async start() {
+        const oneWeekInSeconds = 7 * 24 * 60 * 60;
+        const encryptedUser = await CipherService.encrypt(JSON.stringify(this.user));
 
-                resolve(this.user);
-            }).catch(() => {
-                reject(new Error('Encryption error'));
-            });
+        this.res.cookie(this.cookieName, encryptedUser, {
+            maxAge: oneWeekInSeconds,
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
         });
+
+        return this.user;
+    }
+
+    destroy() {
+        return this.res.clearCookie(this.cookieName);
     }
 }
 

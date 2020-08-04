@@ -2,66 +2,81 @@ const UserCreateService = require('./services/UserCreateService');
 const UserId = require('./value-objects/UserId');
 const UserLoginService = require('./services/UserLoginService');
 const SessionHandlerService = require('../session/services/SessionHandlerService');
-const Response = require('../../core/response/Response');
 const Assert = require('../shared/services/assert/Assert');
+const BaseError = require('../../core/errors/BaseError');
+const Response = require('../../core/response/Response');
 
 const UserController = {
-    create: (req, res) => {
-        const {
-            first_name: firstName,
-            last_name: lastName,
-            email,
-            password,
-            birthday,
-            country,
-        } = req.body;
-        const id = UserId();
+    create: async (req, res, next) => {
+        try {
+            const {
+                first_name: firstName,
+                last_name: lastName,
+                email,
+                password,
+                birthday,
+                country,
+            } = req.body;
+            const id = UserId();
+            const user = new UserCreateService(
+                id,
+                firstName,
+                lastName,
+                email,
+                password,
+                birthday,
+                country,
+            );
 
-        const user = new UserCreateService(
-            id,
-            firstName,
-            lastName,
-            email,
-            password,
-            birthday,
-            country,
-        );
+            const response = await user.save();
+            if (!response) {
+                throw new BaseError(400, 'Error saving user');
+            }
 
-        user.save().then((response) => {
             res.status(201).send(response);
-        }).catch((error) => {
-            res.status(400).send(Response.error('Error', error));
-        });
-    },
-    login: (req, res) => {
-        const assert = new Assert(req.body, {
-            identifier: {
-                required: true,
-                pattern: /.d+/,
-                patternMessage: 'Nooo',
-            },
-            password: {
-                required: true,
-            },
-        });
-
-        if (!assert.isValid()) {
-            return res.status(400).send(Response.error(assert.invalidMessage, assert.errors));
+        } catch (error) {
+            next(error);
         }
+    },
+    login: async (req, res, next) => {
+        try {
+            const assert = new Assert(req.body, {
+                identifier: {
+                    required: true,
+                },
+                password: {
+                    required: true,
+                },
+            });
 
-        const { identifier, password } = req.body;
-        const user = new UserLoginService(identifier, password);
+            if (!assert.isValid()) {
+                throw new BaseError(400, Response.error(assert.invalidMessage, assert.errors));
+            }
 
-        user.login().then(async (response) => {
+            const { identifier, password } = req.body;
+            const user = new UserLoginService(identifier, password);
+
+            const response = await user.login();
+            if (!response) {
+                throw new BaseError(400, 'Error logging in');
+            }
+
             const session = new SessionHandlerService(user, res);
             await session.start();
 
             res.status(200).send(response);
-        }).catch((error) => {
-            res.status(error.status || 500).send(Response.error(error.message));
-        });
-
-        return true;
+        } catch (error) {
+            next(error);
+        }
+    },
+    logout: async (req, res, next) => {
+        try {
+            const session = new SessionHandlerService(null, res);
+            await session.destroy();
+            return res.status(200).send();
+        } catch (error) {
+            next(error);
+        }
     },
 };
 

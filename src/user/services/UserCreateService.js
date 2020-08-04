@@ -1,4 +1,5 @@
 const UserModel = require('../UserModel');
+const BaseError = require('../../../core/errors/BaseError');
 
 class UserCreateService {
     constructor(
@@ -19,24 +20,24 @@ class UserCreateService {
         this.country = country;
     }
 
-    save() {
-        return new Promise((resolve, reject) => {
-            const user = new UserModel({
-                _id: this.id,
-                first_name: this.firstName,
-                last_name: this.lastName,
-                email: this.email,
-                password: this.password,
-                birthday: this.birthday,
-                country: this.country,
-            });
-
-            user.save().then((response) => {
-                resolve(response);
-            }).catch((error) => {
-                reject(error);
-            });
+    async save() {
+        const user = new UserModel({
+            _id: this.id,
+            first_name: this.firstName,
+            last_name: this.lastName,
+            email: this.email,
+            password: this.password,
+            birthday: this.birthday,
+            country: this.country,
         });
+
+        const duplicated = await UserModel.findOne({ email: this.email });
+        if (duplicated) {
+            throw new BaseError(409, 'User already exists');
+        }
+
+        const response = await user.save();
+        return response;
     }
 }
 

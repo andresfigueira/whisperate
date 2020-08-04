@@ -42,7 +42,7 @@ const UserSchema = new mongoose.Schema({
     },
 });
 
-UserSchema.pre('save', async (next) => {
+UserSchema.pre('save', async function presave(next) {
     if (this.isModified('password')) {
         const encryptedPassword = CipherService.encrypt(this.password);
         if (!encryptedPassword) { throw new Error('Error encrypting password'); }

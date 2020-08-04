@@ -4,6 +4,7 @@
   "description": "Whisperate",
   "main": "index.js",
   "scripts": {
+    "prestart": "cross-env DEBUG=express:*",
     "start": "cross-env NODE_ENV=local nodemon",
     "start:development": "cross-env NODE_ENV=development nodemon",
     "start:production": "cross-env NODE_ENV=production nodemon"
@@ -15,6 +16,7 @@
   "dependencies": {
     "bcrypt": "^5.0.0",
     "chalk": "^4.1.0",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",

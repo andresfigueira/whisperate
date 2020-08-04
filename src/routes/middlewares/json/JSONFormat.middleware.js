@@ -1,4 +1,5 @@
 const chalk = require('chalk');
+const Response = require('../../../../core/response/Response');
 
 function JSONFormatMiddleware(err, req, res, next) {
     if (err) {

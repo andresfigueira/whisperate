@@ -1,4 +1,5 @@
 const ObjectHelper = require('../../../shared/helpers/Object.helper');
+const Response = require('../../../../core/response/Response');
 
 function JSONBodyRequiredMiddleware(req, res, next) {
     if (req.is('application/json') && ObjectHelper.isEmpty(req.body)) {

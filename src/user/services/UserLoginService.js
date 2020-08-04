@@ -1,6 +1,6 @@
 const UserModel = require('../UserModel');
 const CipherService = require('../../shared/services/cipher/CipherService');
-const CustomError = require('../../../core/errors/CustomError');
+const BaseError = require('../../../core/errors/BaseError');
 
 class UserLoginService {
     constructor(identifier, password) {
@@ -8,22 +8,18 @@ class UserLoginService {
         this.password = password;
     }
 
-    login() {
-        return new Promise(async (resolve, reject) => {
-            const user = await UserModel.findOne({ email: this.identifier }).exec();
-            if (!user) {
-                reject(new CustomError('User not found', 404));
-                return;
-            }
+    async login() {
+        const user = await UserModel.findOne({ email: this.identifier }).exec();
+        if (!user) {
+            throw new BaseError(404, 'User not found');
+        }
 
-            const match = await CipherService.compare(this.password, user.password);
-            if (!match) {
-                reject(new CustomError('Invalid credentials', 401));
-                return;
-            }
+        const match = await CipherService.compare(this.password, user.password);
+        if (!match) {
+            throw new BaseError(401, 'Invalid credentials');
+        }
 
-            resolve(user);
-        });
+        return user;
     }
 }
 
