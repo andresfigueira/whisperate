@@ -1,5 +1,4 @@
 const TokenCookieName = require('../value-objects/TokenCookieName');
-const Duration = require('../value-objects/Duration');
 const EncrypterService = require('../../shared/services/encrypter/EncrypterService');
 
 class SessionHandlerService {
@@ -8,7 +7,7 @@ class SessionHandlerService {
         this.user = JSON.stringify(user);
         this.tokenCookieValue = null;
         this.tokenCookieName = TokenCookieName();
-        this.duration = Duration();
+        this.duration = 7 * 24 * 60 * 60 * 1000;
     }
 
     async start() {

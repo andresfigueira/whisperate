@@ -1,7 +1,7 @@
 const chalk = require('chalk');
 const Response = require('../../../../core/response/Response');
 
-function URLEncodedFormatMiddleware(err, req, res, next) {
+function URLEncodedFormat(err, req, res, next) {
     if (err) {
         console.log(chalk.bgRed('   Error URL encoded   '));
         console.log(chalk.red(JSON.stringify(err, null, 2)));
@@ -11,4 +11,4 @@ function URLEncodedFormatMiddleware(err, req, res, next) {
     next();
 }
 
-module.exports = URLEncodedFormatMiddleware;
+module.exports = URLEncodedFormat;

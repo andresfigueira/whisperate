@@ -1,23 +1,23 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const JSONBodyRequiredMiddleware = require('./json/JSONBodyRequired.middleware');
-const JSONFormatMiddleware = require('./json/JSONFormat.middleware');
-const URLEncodedFormatMiddleware = require('./urlencoded/URLEncodedFormat.middleware');
-const loggerMiddleware = require('./logger/logger.middleware');
+const JSONBodyRequired = require('./json/JSONBodyRequired.middleware');
+const JSONFormat = require('./json/JSONFormat.middleware');
+const URLEncodedFormat = require('./urlencoded/URLEncodedFormat.middleware');
+const logger = require('./logger/logger.middleware');
 
 function middlewares(app) {
     app.use(cors());
-    app.use(loggerMiddleware);
+    app.use(logger);
 
     app.use(cookieParser());
 
     app.use(express.json());
-    app.use(JSONFormatMiddleware);
-    app.use(JSONBodyRequiredMiddleware);
+    app.use(JSONFormat);
+    app.use(JSONBodyRequired);
 
     app.use(express.urlencoded({ extended: true }));
-    app.use(URLEncodedFormatMiddleware);
+    app.use(URLEncodedFormat);
 }
 
 module.exports = middlewares;

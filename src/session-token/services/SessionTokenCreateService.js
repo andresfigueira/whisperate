@@ -1,5 +1,4 @@
 const SessionTokenModel = require('../SessionTokenModel');
-const BaseError = require('../../../core/errors/BaseError');
 
 class SessionTokenCreateService {
     constructor(

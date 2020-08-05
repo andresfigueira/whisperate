@@ -21,5 +21,5 @@ const SessionTokenSchema = new mongoose.Schema({
     },
 });
 
-const SessionTokenModel = mongoose.model('SessionToken', SessionTokenSchema);
+const SessionTokenModel = mongoose.model('SessionToken', SessionTokenSchema, 'session_tokens');
 module.exports = SessionTokenModel;

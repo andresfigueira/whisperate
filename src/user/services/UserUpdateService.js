@@ -1,5 +1,6 @@
 const UserModel = require('../UserModel');
-const BaseError = require('../../../core/errors/BaseError');
+const NotFound = require('../../../core/errors/NotFound');
+const InternalServerError = require('../../../core/errors/InternalServerError');
 
 class UserUpdateService {
     constructor(id, values) {
@@ -11,7 +12,7 @@ class UserUpdateService {
     async save() {
         const user = await UserModel.findOne({ _id: this.id }).exec();
         if (!user) {
-            throw new BaseError(404, 'User not found');
+            throw new NotFound(404);
         }
 
         const query = { _id: this.id };
@@ -24,7 +25,7 @@ class UserUpdateService {
             this.values,
             options,
             (err, doc) => {
-                if (err) { throw new BaseError(500, 'Cannot update user'); }
+                if (err) { throw new InternalServerError(500, 'Cannot update user'); }
                 return doc;
             },
         );

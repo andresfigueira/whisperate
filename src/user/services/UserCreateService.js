@@ -1,5 +1,5 @@
 const UserModel = require('../UserModel');
-const BaseError = require('../../../core/errors/BaseError');
+const Conflict = require('../../../core/errors/Conflict');
 
 class UserCreateService {
     constructor(
@@ -33,7 +33,7 @@ class UserCreateService {
 
         const duplicated = await UserModel.findOne({ email: this.email });
         if (duplicated) {
-            throw new BaseError(409, 'User already exists');
+            throw new Conflict('User already exists');
         }
 
         const response = await user.save();

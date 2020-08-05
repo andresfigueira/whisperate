@@ -1,4 +1,4 @@
-function errorMiddleware(app) {
+function errorHandler(app) {
     app.use((err, req, res, next) => {
         if (err) {
             const response = {
@@ -7,7 +7,6 @@ function errorMiddleware(app) {
             };
 
             if (process.env.NODE_ENV !== 'production') {
-                console.log(err.stack);
                 response.stack = err.stack;
             }
             res.status(err.status || 500).json(response);
@@ -16,4 +15,4 @@ function errorMiddleware(app) {
     });
 }
 
-module.exports = errorMiddleware;
+module.exports = errorHandler;

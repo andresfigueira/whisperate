@@ -3,11 +3,12 @@ const UserId = require('./value-objects/UserId');
 const UserLoginService = require('./services/UserLoginService');
 const SessionHandlerService = require('../session/services/SessionHandlerService');
 const Assert = require('../shared/services/assert/Assert');
-const BaseError = require('../../core/errors/BaseError');
 const Response = require('../../core/response/Response');
 const UserUpdateService = require('./services/UserUpdateService');
 const SessionTokenCreateService = require('../session-token/services/SessionTokenCreateService');
 const SessionTokenId = require('../session-token/value-objects/SessionTokenId');
+const BadRequest = require('../../core/errors/BadRequest');
+const InternalServerError = require('../../core/errors/InternalServerError');
 
 const UserController = {
     create: async (req, res, next) => {
@@ -31,7 +32,7 @@ const UserController = {
             });
 
             if (!assert.isValid()) {
-                throw new BaseError(400, Response.error(assert.invalidMessage, assert.errors));
+                throw new BadRequest(Response.error(assert.invalidMessage, assert.errors));
             }
 
             const {
@@ -55,7 +56,7 @@ const UserController = {
 
             const response = await user.save();
             if (!response) {
-                throw new BaseError(400, 'Error saving user');
+                throw new BadRequest('Error saving user');
             }
 
             res.status(201).send(response);
@@ -75,14 +76,14 @@ const UserController = {
             });
 
             if (!assert.isValid()) {
-                throw new BaseError(400, Response.error(assert.invalidMessage, assert.errors));
+                throw new BadRequest(Response.error(assert.invalidMessage, assert.errors));
             }
 
             const { identifier, password } = req.body;
             const userLoginService = new UserLoginService(identifier, password);
             const user = await userLoginService.login();
             if (!user) {
-                throw new BaseError(500, 'Cannot log in');
+                throw new InternalServerError('Cannot log in');
             }
 
             const session = new SessionHandlerService(res, user);
@@ -119,7 +120,7 @@ const UserController = {
                 },
             });
             if (!assert.isValid()) {
-                throw new BaseError(400, Response.error(assert.invalidMessage, assert.errors));
+                throw new BadRequest(Response.error(assert.invalidMessage, assert.errors));
             }
 
             const { id, ...values } = req.body;

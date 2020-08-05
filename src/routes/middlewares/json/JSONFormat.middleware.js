@@ -1,7 +1,7 @@
 const chalk = require('chalk');
 const Response = require('../../../../core/response/Response');
 
-function JSONFormatMiddleware(err, req, res, next) {
+function JSONFormat(err, req, res, next) {
     if (err) {
         console.log(chalk.bgRed('   Error JSON   '));
         console.log(chalk.red(JSON.stringify(err, null, 2)));
@@ -11,4 +11,4 @@ function JSONFormatMiddleware(err, req, res, next) {
     next();
 }
 
-module.exports = JSONFormatMiddleware;
+module.exports = JSONFormat;

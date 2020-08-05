@@ -1,6 +1,7 @@
 const UserModel = require('../UserModel');
 const SuperEncrypterService = require('../../shared/services/super-encrypter/SuperEncrypterService');
-const BaseError = require('../../../core/errors/BaseError');
+const NotFound = require('../../../core/errors/NotFound');
+const Unauthorized = require('../../../core/errors/Unauthorized');
 
 class UserLoginService {
     constructor(identifier, password) {
@@ -11,12 +12,12 @@ class UserLoginService {
     async login() {
         const user = await UserModel.findOne({ email: this.identifier }).exec();
         if (!user) {
-            throw new BaseError(404, 'User not found');
+            throw new NotFound();
         }
 
         const match = await SuperEncrypterService.compare(this.password, user.password);
         if (!match) {
-            throw new BaseError(401, 'Invalid credentials');
+            throw new Unauthorized('Invalid credentials');
         }
 
         return user;
