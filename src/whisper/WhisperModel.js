@@ -1,4 +1,5 @@
 const mongoose = require('../config/db/db.config');
+const WhisperTypes = require('./value-objects/WhisperTypes');
 
 const WhisperSchema = new mongoose.Schema({
     _id: {
@@ -8,12 +9,16 @@ const WhisperSchema = new mongoose.Schema({
     text: {
         type: String,
         required: 'Required',
-        maxlength: 255,
+        maxlength: 1024,
     },
     type: {
         type: String,
-        enum: ['text', 'question'],
-        default: 'text',
+        enum: [WhisperTypes.text, WhisperTypes.question],
+        default: WhisperTypes.text,
+    },
+    views: {
+        type: Number,
+        default: 0,
     },
     votes: {
         type: Number,
@@ -36,6 +41,14 @@ const WhisperSchema = new mongoose.Schema({
         ref: 'User',
         required: 'Required',
     },
+    tags: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tag',
+        required: 'Required',
+    }],
+    files: [{
+        url: { type: String, required: true },
+    }],
 }, {
     timestamps: {
         createdAt: 'created_at',
