@@ -9,6 +9,7 @@ function WhisperRouter(app) {
     router.post('/v1/whispers', permit('user'), WhisperController.create);
     router.delete('/v1/whispers/:id', permit('user'), WhisperController.delete);
     router.get('/v1/whispers/:id', permit('user'), WhisperController.id);
+    router.get('/v1/whispers', permit('user'), WhisperController.all);
 }
 
 module.exports = WhisperRouter;
