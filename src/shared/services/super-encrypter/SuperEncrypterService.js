@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 
-class CipherService {
+class SuperEncrypterService {
     static encrypt(data, saltRounds = 10) {
         return new Promise((resolve, reject) => bcrypt.hash(data, saltRounds)
             .then(resolve)
@@ -14,4 +14,4 @@ class CipherService {
     }
 }
 
-module.exports = CipherService;
+module.exports = SuperEncrypterService;

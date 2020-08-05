@@ -1,6 +1,7 @@
 const validator = require('validator');
 const mongoose = require('../config/db/db.config');
-const CipherService = require('../shared/services/cipher/CipherService');
+const SuperEncrypterService = require('../shared/services/super-encrypter/SuperEncrypterService');
+const Roles = require('./value-objects/Roles');
 
 const UserSchema = new mongoose.Schema({
     _id: {
@@ -28,12 +29,25 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: 'Required',
     },
+    role: {
+        type: String,
+        enum: [
+            Roles.superadmin,
+            Roles.support,
+            Roles.user,
+        ],
+        default: Roles.user,
+    },
     birthday: {
         type: Date,
         required: 'Required',
     },
     country: {
         type: String,
+    },
+    session_token: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'SessionToken',
     },
 }, {
     timestamps: {
@@ -44,7 +58,7 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.pre('save', async function presave(next) {
     if (this.isModified('password')) {
-        const encryptedPassword = CipherService.encrypt(this.password);
+        const encryptedPassword = await SuperEncrypterService.encrypt(this.password);
         if (!encryptedPassword) { throw new Error('Error encrypting password'); }
         this.set('password', encryptedPassword);
     }

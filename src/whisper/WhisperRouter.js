@@ -3,9 +3,9 @@ const WhisperController = require('./WhisperController');
 
 const router = express.Router();
 
-function UserRouter(app) {
+function WhisperRouter(app) {
     app.use('', router);
     router.post('/v1/whispers', WhisperController.create);
 }
 
-module.exports = UserRouter;
+module.exports = WhisperRouter;

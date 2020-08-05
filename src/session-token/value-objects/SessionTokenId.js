@@ -1,7 +1,7 @@
 const Mongoose = require('../../config/db/db.config');
 
-function WhisperId() {
+function SessionTokenId() {
     return Mongoose.Types.ObjectId();
 }
 
-module.exports = WhisperId;
+module.exports = SessionTokenId;

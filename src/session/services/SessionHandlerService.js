@@ -1,27 +1,31 @@
-const CipherService = require('../../shared/services/cipher/CipherService');
+const TokenCookieName = require('../value-objects/TokenCookieName');
+const Duration = require('../value-objects/Duration');
+const EncrypterService = require('../../shared/services/encrypter/EncrypterService');
 
 class SessionHandlerService {
-    constructor(user, res) {
-        this.user = user;
+    constructor(res, user = null) {
         this.res = res;
-        this.cookieName = 'whisperate-session';
+        this.user = JSON.stringify(user);
+        this.tokenCookieValue = null;
+        this.tokenCookieName = TokenCookieName();
+        this.duration = Duration();
     }
 
     async start() {
-        const oneWeekInSeconds = 7 * 24 * 60 * 60;
-        const encryptedUser = await CipherService.encrypt(JSON.stringify(this.user));
-
-        this.res.cookie(this.cookieName, encryptedUser, {
-            maxAge: oneWeekInSeconds,
+        this.tokenCookieValue = await EncrypterService.encrypt(this.user);
+        this.res.cookie(this.tokenCookieName, this.tokenCookieValue, {
+            maxAge: this.duration,
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
         });
+    }
 
-        return this.user;
+    getCookie() {
+        return this.tokenCookieValue;
     }
 
     destroy() {
-        return this.res.clearCookie(this.cookieName);
+        return this.res.clearCookie(this.tokenCookieName);
     }
 }
 

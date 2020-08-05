@@ -1,5 +1,5 @@
 const UserModel = require('../UserModel');
-const CipherService = require('../../shared/services/cipher/CipherService');
+const SuperEncrypterService = require('../../shared/services/super-encrypter/SuperEncrypterService');
 const BaseError = require('../../../core/errors/BaseError');
 
 class UserLoginService {
@@ -14,7 +14,7 @@ class UserLoginService {
             throw new BaseError(404, 'User not found');
         }
 
-        const match = await CipherService.compare(this.password, user.password);
+        const match = await SuperEncrypterService.compare(this.password, user.password);
         if (!match) {
             throw new BaseError(401, 'Invalid credentials');
         }
