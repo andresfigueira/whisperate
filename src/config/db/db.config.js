@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const InternalServerError = require('../../../core/errors/InternalServerError');
 
 const {
     DATABASE_HOST,
@@ -17,7 +18,7 @@ mongoose.connect(`${host}/${DATABASE_NAME}?authSource=${DATABASE_AUTHENTICATION_
 });
 
 mongoose.connection.on('error', () => {
-    throw new Error('Unable to connect to database');
+    throw new InternalServerError('Unable to connect to database');
 });
 
 module.exports = mongoose;

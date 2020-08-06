@@ -1,5 +1,5 @@
 const isAuthenticated = require('../authentication/isAuthenticated');
-const Roles = require('../../../user/value-objects/Roles');
+const Roles = require('../../../domain/user/value-objects/Roles');
 const getCurrentUser = require('../../../session/helpers/getCurrentUser');
 const Forbidden = require('../../../../core/errors/Forbidden');
 

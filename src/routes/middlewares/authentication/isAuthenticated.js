@@ -1,6 +1,6 @@
 const TokenCookieName = require('../../../session/value-objects/TokenCookieName');
 const Unauthorized = require('../../../../core/errors/Unauthorized');
-const SessionTokenModel = require('../../../session-token/SessionTokenModel');
+const SessionTokenModel = require('../../../domain/session-token/SessionTokenModel');
 
 async function isAuthenticated(req, res, next) {
     try {

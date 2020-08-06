@@ -1,3 +1,5 @@
+const NotFound = require('../../../../core/errors/NotFound');
+
 function errorHandler(app) {
     app.use((err, req, res, next) => {
         if (err) {
@@ -12,6 +14,13 @@ function errorHandler(app) {
             res.status(err.status || 500).json(response);
         }
         next();
+    });
+    app.use((req, res) => {
+        const response = {
+            status: 404,
+            message: 'Page not found',
+        };
+        res.status(404).json(response);
     });
 }
 
