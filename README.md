@@ -15,5 +15,5 @@ DATABASE_AUTHENTICATION_DATABASE
 ENCRYPTER_RECIPE  
 
 ## Start server
-npm install 
-npm run start 
+npm install  
+npm run start  
