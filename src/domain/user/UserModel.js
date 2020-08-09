@@ -69,6 +69,9 @@ const UserSchema = new mongoose.Schema({
     },
 });
 
+UserSchema.virtual('fullName')
+    .get(function data() { return `${this.first_name} ${this.last_name}`; });
+
 UserSchema.pre('save', async function presave(next) {
     if (this.isModified('password')) {
         const encryptedPassword = await SuperEncrypterService.encrypt(this.password);

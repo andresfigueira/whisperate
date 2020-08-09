@@ -1,7 +1,7 @@
 const Mongoose = require('../../../config/db/db.config');
 
-function UserId() {
-    return Mongoose.Types.ObjectId();
+function UserId(id = null) {
+    return Mongoose.Types.ObjectId(id);
 }
 
 module.exports = UserId;

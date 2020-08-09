@@ -1,5 +1,3 @@
-const NotFound = require('../../../../core/errors/NotFound');
-
 function errorHandler(app) {
     app.use((err, req, res, next) => {
         if (err) {
@@ -9,8 +7,10 @@ function errorHandler(app) {
             };
 
             if (process.env.NODE_ENV !== 'production') {
+                console.log(err.stack);
                 response.stack = err.stack;
             }
+
             res.status(err.status || 500).json(response);
         }
         next();

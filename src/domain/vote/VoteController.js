@@ -4,8 +4,12 @@ const getCurrentUser = require('../../session/helpers/getCurrentUser');
 const BadRequest = require('../../../core/errors/BadRequest');
 const NotFound = require('../../../core/errors/NotFound');
 const WhisperModel = require('../whisper/WhisperModel');
+const VoteWhisperService = require('./services/VoteWhisperService');
+const VoteId = require('./value-objects/VoteId');
+const WhisperId = require('../whisper/value-objects/WhisperId');
+const UserId = require('../user/value-objects/UserId');
 
-const WhisperController = {
+const VoteController = {
     vote: async (req, res, next) => {
         try {
             const assert = new Assert({
@@ -22,16 +26,23 @@ const WhisperController = {
             }
 
             const whisper = await WhisperModel.findOne({ _id: req.params.id }).exec();
-            if (!whisper) { throw new NotFound(); }
+            if (!whisper) { throw new NotFound('Whisper not found'); }
 
-            const { _id: userId } = getCurrentUser(req);
+            const user = getCurrentUser(req);
+            const vote = new VoteWhisperService(
+                req.body.score,
+                WhisperId(whisper._id),
+                UserId(user._id),
+            );
+            await vote.save();
 
-            console.log({ whisper, userId });
-            // res.status(200).send(response);
+            console.log(vote.whisper);
+
+            res.status(200).send(vote.whisper);
         } catch (error) {
             next(error);
         }
     },
 };
 
-module.exports = WhisperController;
+module.exports = VoteController;

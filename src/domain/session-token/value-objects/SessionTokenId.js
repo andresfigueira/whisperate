@@ -1,7 +1,7 @@
 const Mongoose = require('../../../config/db/db.config');
 
-function SessionTokenId() {
-    return Mongoose.Types.ObjectId();
+function SessionTokenId(id = null) {
+    return Mongoose.Types.ObjectId(id);
 }
 
 module.exports = SessionTokenId;

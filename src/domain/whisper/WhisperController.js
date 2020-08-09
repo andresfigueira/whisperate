@@ -9,6 +9,7 @@ const NotFound = require('../../../core/errors/NotFound');
 const Forbidden = require('../../../core/errors/Forbidden');
 const WhisperCreateService = require('./services/WhisperCreateService');
 const WhisperDeleteService = require('./services/WhisperDeleteService');
+const UserId = require('../user/value-objects/UserId');
 
 const WhisperController = {
     all: async (req, res, next) => {
@@ -70,7 +71,7 @@ const WhisperController = {
                 id,
                 req.body.text,
                 !!req.body.private,
-                mongoose.Types.ObjectId(userId),
+                UserId(userId),
             );
 
             const response = await whisper.save();
