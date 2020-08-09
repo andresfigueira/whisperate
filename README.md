@@ -1,15 +1,19 @@
-### Local setup
+# Local setup
 
-## Environment variables
+## Environment
+### Filename
+env.local 
+
+### Variables
 PORT
-DATABASE_HOST
-DATABASE_NAME
-DATABASE_PORT
-DATABASE_USER
-DATABASE_PASSWORD
-DATABASE_AUTHENTICATION_DATABASE
-ENCRYPTER_RECIPE
+DATABASE_HOST 
+DATABASE_NAME 
+DATABASE_PORT 
+DATABASE_USER 
+DATABASE_PASSWORD 
+DATABASE_AUTHENTICATION_DATABASE 
+ENCRYPTER_RECIPE 
 
-## Commands
-# npm install
-# npm run start
+## Start server
+npm install 
+npm run start 
