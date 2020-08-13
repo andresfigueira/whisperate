@@ -16,8 +16,8 @@ function middlewares(app) {
     app.use(JSONFormat);
     app.use(JSONBodyRequired);
 
-    app.use(express.urlencoded({ extended: true }));
-    app.use(URLEncodedFormat);
+    // app.use(express.urlencoded({ extended: true }));
+    // app.use(URLEncodedFormat);
 }
 
 module.exports = middlewares;
