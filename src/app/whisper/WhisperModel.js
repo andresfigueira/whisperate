@@ -1,4 +1,5 @@
-const mongoose = require('../../config/db/db.config');
+const mongoose = require('../../config/db');
+const { defaultSchemaOptions } = require('../../shared/services/entity/Entity.helper');
 const { WhisperTypes } = require('./constants');
 
 const WhisperSchema = new mongoose.Schema({
@@ -6,21 +7,26 @@ const WhisperSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: 'Required',
     },
-    text: {
+    title: {
         type: String,
         required: 'Required',
         maxlength: 1024,
     },
+    body: {
+        type: String,
+        required: 'Required',
+        maxlength: 8192,
+    },
     type: {
         type: String,
-        enum: [WhisperTypes.text, WhisperTypes.question],
+        enum: Object.values(WhisperTypes),
         default: WhisperTypes.text,
     },
-    views: {
+    total_views: {
         type: Number,
         default: 0,
     },
-    votes_count: {
+    total_votes: {
         type: Number,
         default: 0,
     },
@@ -36,33 +42,28 @@ const WhisperSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    user: {
+    user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: 'Required',
     },
-    tags: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Tag',
-        required: 'Required',
-    }],
-    votes: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Vote',
-    }],
-    comments: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comment',
-    }],
-    files: [{
-        url: { type: String, required: true },
-    }],
-}, {
-    timestamps: {
-        createdAt: 'created_at',
-        updatedAt: 'updated_at',
-    },
-});
+    // tags: [{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Tag',
+    //     required: 'Required',
+    // }],
+    // votes: [{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Vote',
+    // }],
+    // comments: [{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Comment',
+    // }],
+    // files: [{
+    //     url: { type: String, required: true },
+    // }],
+}, defaultSchemaOptions);
 
 const WhisperModel = mongoose.model('Whisper', WhisperSchema);
 module.exports = WhisperModel;

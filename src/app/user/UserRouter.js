@@ -8,9 +8,9 @@ const router = express.Router();
 function UserRouter(app) {
     app.use('/v1', router);
     router.post('/users', UserController.create);
-    router.patch('/users', permit('superadmin'), UserController.update);
+    router.put('/users/:id', /* permit('superadmin'), */ UserController.update);
     router.post('/login', UserController.login);
-    router.delete('/logout', isAuthenticated, UserController.logout);
+    router.delete('/logout', /* isAuthenticated, */ UserController.logout);
 }
 
 module.exports = UserRouter;

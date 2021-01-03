@@ -1,5 +1,5 @@
-require('./config/env/env.config');
-require('./config/db/db.config');
+require('./config/env');
+require('./config/db');
 const express = require('express');
 const chalk = require('chalk');
 const router = require('./routes/router');

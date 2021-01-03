@@ -1,5 +1,5 @@
 const Mongoose = require('mongoose');
-const InternalServerError = require('../../../core/errors/InternalServerError');
+const InternalServerError = require('../../core/errors/InternalServerError');
 
 const { DATABASE_CONNECTION_URI } = process.env;
 

@@ -6,7 +6,7 @@ const router = express.Router();
 
 function VoteRouter(app) {
     app.use('/v1', router);
-    router.post('/whispers/:id/vote', permit('user'), VoteController.vote);
+    router.post('/whispers/:id/vote', /* permit('user'), */ VoteController.vote);
 }
 
 module.exports = VoteRouter;

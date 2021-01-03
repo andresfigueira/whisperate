@@ -1,11 +1,12 @@
 const WhisperModel = require('../WhisperModel');
 
 class WhisperCreateService {
-    constructor(
+    constructor({
         id,
-        text,
+        title,
+        body,
         isPrivate,
-        user,
+        userId,
         type,
         views,
         votes,
@@ -13,16 +14,17 @@ class WhisperCreateService {
         downVotes,
         tags,
         files,
-    ) {
+    }) {
         this.id = id;
-        this.text = text;
+        this.title = title;
+        this.body = body;
         this.type = type;
         this.views = views;
         this.votes = votes;
         this.upVotes = upVotes;
         this.downVotes = downVotes;
         this.isPrivate = isPrivate;
-        this.user = user;
+        this.userId = userId;
         this.tags = tags;
         this.files = files;
     }
@@ -30,14 +32,15 @@ class WhisperCreateService {
     async save() {
         const whisper = new WhisperModel({
             _id: this.id,
-            text: this.text,
+            title: this.title,
+            body: this.body,
             type: this.type,
             views: this.views,
             votes: this.votes,
             up_votes: this.upVotes,
             down_votes: this.downVotes,
             is_private: this.isPrivate,
-            user: this.user,
+            user_id: this.userId,
             tags: this.tags,
             files: this.files,
         });

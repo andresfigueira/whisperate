@@ -50,7 +50,7 @@ class VoteWhisperService {
 
         console.log(v);
 
-        // whisper.votes_count += 1;
+        // whisper.total_votes += 1;
         // whisper.votes.push(this.voteUpdated._id);
         // whisper.save((err) => {
         //     if (err) { throw new InternalServerError('Cannot update whisper while voting'); }

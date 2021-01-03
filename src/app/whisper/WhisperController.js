@@ -34,16 +34,16 @@ const WhisperController = {
     id: async (req, res, next) => {
         try {
             const assert = new Assert(req.params, {
-                id: {
-                    required: true,
-                },
+                id: { required: true },
             });
-
             if (!assert.isValid()) {
                 throw new BadRequest(Response.error(assert.invalidMessage, assert.errors));
             }
 
-            const whisper = await WhisperModel.findOne({ _id: req.params.id }).populate('user').exec();
+            const whisper = await WhisperModel
+                .findOne({ _id: req.params.id })
+                .populate('user')
+                .exec();
             if (!whisper) { throw new NotFound(); }
 
             res.status(200).send(whisper);
@@ -54,23 +54,21 @@ const WhisperController = {
     create: async (req, res, next) => {
         try {
             const assert = new Assert(req.body, {
-                text: {
-                    required: true,
-                },
+                title: { required: true },
+                body: { required: true },
             });
-
             if (!assert.isValid()) {
                 throw new BadRequest(Response.error(assert.invalidMessage, assert.errors));
             }
 
-            const id = getObjectId();
             const { _id: userId } = getCurrentUser(req);
-            const whisper = new WhisperCreateService(
-                id,
-                req.body.text,
-                !!req.body.private,
-                getObjectId(userId),
-            );
+            const whisper = new WhisperCreateService({
+                id: getObjectId(),
+                title: req.body.title,
+                body: req.body.body,
+                isPrivate: !!req.body.is_private,
+                userId: getObjectId(userId),
+            });
 
             const response = await whisper.save();
             res.status(200).send(response);
@@ -81,23 +79,23 @@ const WhisperController = {
     delete: async (req, res, next) => {
         try {
             const assert = new Assert(req.params, {
-                id: {
-                    required: true,
-                },
+                id: { required: true },
             });
-
             if (!assert.isValid()) {
                 throw new BadRequest(Response.error(assert.invalidMessage, assert.errors));
             }
 
+            const { id } = req.params;
             const { _id: userId } = getCurrentUser(req);
-            const whisper = await WhisperModel.findOne({ _id: req.params.id }).exec();
+            const whisper = await WhisperModel
+                .findOne({ _id: id })
+                .exec();
             if (!whisper) { throw new NotFound(); }
 
-            const cannotDelete = userId !== whisper.user.toString();
+            const cannotDelete = userId !== whisper?.user_id?.toString();
             if (cannotDelete) { throw new Forbidden(); }
 
-            const remover = new WhisperDeleteService({ _id: req.params.id });
+            const remover = new WhisperDeleteService({ _id: id });
             await remover.save();
 
             res.status(200).send();

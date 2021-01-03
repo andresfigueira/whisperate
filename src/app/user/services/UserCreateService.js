@@ -6,6 +6,7 @@ class UserCreateService {
         id,
         firstName,
         lastName,
+        username,
         email,
         password,
         birthday,
@@ -14,6 +15,7 @@ class UserCreateService {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.username = username;
         this.email = email;
         this.password = password;
         this.birthday = birthday;
@@ -25,6 +27,7 @@ class UserCreateService {
             _id: this.id,
             first_name: this.firstName,
             last_name: this.lastName,
+            username: this.username,
             email: this.email,
             password: this.password,
             birthday: this.birthday,

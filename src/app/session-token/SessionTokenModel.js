@@ -1,4 +1,5 @@
-const mongoose = require('../../config/db/db.config');
+const mongoose = require('../../config/db');
+const { defaultSchemaOptions } = require('../../shared/services/entity/Entity.helper');
 
 const SessionTokenSchema = new mongoose.Schema({
     _id: {
@@ -14,12 +15,7 @@ const SessionTokenSchema = new mongoose.Schema({
         ref: 'User',
         required: 'Required',
     },
-}, {
-    timestamps: {
-        createdAt: 'created_at',
-        updatedAt: 'updated_at',
-    },
-});
+}, defaultSchemaOptions);
 
 const SessionTokenModel = mongoose.model('SessionToken', SessionTokenSchema, 'session_tokens');
 module.exports = SessionTokenModel;

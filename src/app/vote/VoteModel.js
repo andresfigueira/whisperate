@@ -1,4 +1,5 @@
-const mongoose = require('../../config/db/db.config');
+const mongoose = require('../../config/db');
+const { defaultSchemaOptions } = require('../../shared/services/entity/Entity.helper');
 
 const VoteSchema = new mongoose.Schema({
     _id: {
@@ -20,12 +21,7 @@ const VoteSchema = new mongoose.Schema({
         ref: 'User',
         required: 'Required',
     },
-}, {
-    timestamps: {
-        createdAt: 'created_at',
-        updatedAt: 'updated_at',
-    },
-});
+}, defaultSchemaOptions);
 
 const VoteModel = mongoose.model('Vote', VoteSchema);
 module.exports = VoteModel;

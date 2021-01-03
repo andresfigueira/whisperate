@@ -15,43 +15,27 @@ const UserController = {
     create: async (req, res, next) => {
         try {
             const assert = new Assert(req.body, {
-                first_name: {
-                    required: true,
-                },
-                last_name: {
-                    required: true,
-                },
-                email: {
-                    required: true,
-                },
-                password: {
-                    required: true,
-                },
-                birthday: {
-                    required: true,
-                },
+                first_name: { required: true },
+                last_name: { required: true },
+                username: { required: true },
+                email: { required: true },
+                password: { required: true },
+                birthday: { required: true },
             });
             if (!assert.isValid()) {
                 throw new BadRequest(Response.error(assert.invalidMessage, assert.errors));
             }
 
-            const {
-                first_name: firstName,
-                last_name: lastName,
-                email,
-                password,
-                birthday,
-                country,
-            } = req.body;
             const id = getObjectId();
             const user = new UserCreateService(
                 id,
-                firstName,
-                lastName,
-                email,
-                password,
-                birthday,
-                country,
+                req.body.first_name,
+                req.body.last_name,
+                req.body.username,
+                req.body.email,
+                req.body.password,
+                req.body.birthday,
+                req.body.country,
             );
 
             const response = await user.save();
@@ -64,16 +48,10 @@ const UserController = {
     },
     login: async (req, res, next) => {
         try {
-            console.log(req.cookies);
             const assert = new Assert(req.body, {
-                identifier: {
-                    required: true,
-                },
-                password: {
-                    required: true,
-                },
+                identifier: { required: true },
+                password: { required: true },
             });
-
             if (!assert.isValid()) {
                 throw new BadRequest(Response.error(assert.invalidMessage, assert.errors));
             }
@@ -102,7 +80,6 @@ const UserController = {
         try {
             const session = new SessionHandlerService(res);
             await session.destroy();
-
             res.status(200).send();
         } catch (error) {
             next(error);
@@ -110,21 +87,18 @@ const UserController = {
     },
     update: async (req, res, next) => {
         try {
-            const assert = new Assert(req.body, {
-                id: {
-                    required: true,
-                },
+            const assert = new Assert(req.params, {
+                id: { required: true },
             });
-
             if (!assert.isValid()) {
                 throw new BadRequest(Response.error(assert.invalidMessage, assert.errors));
             }
 
-            const { id, ...values } = req.body;
-            const user = await UserModel.findOne({ _id: this.id }).exec();
+            const { id } = req.params;
+            const user = await UserModel.findOne({ _id: id }).exec();
             if (!user) { throw new NotFound(); }
 
-            const updateService = new UserUpdateService(id, values);
+            const updateService = new UserUpdateService(id, req.body);
             const userUpdated = await updateService.save();
 
             res.status(200).send(userUpdated);

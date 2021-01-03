@@ -1,4 +1,5 @@
-const mongoose = require('../../config/db/db.config');
+const mongoose = require('../../config/db');
+const { defaultSchemaOptions } = require('../../shared/services/entity/Entity.helper');
 
 const TagSchema = new mongoose.Schema({
     _id: {
@@ -16,12 +17,7 @@ const TagSchema = new mongoose.Schema({
         ref: 'Whisper',
         required: 'Required',
     }],
-}, {
-    timestamps: {
-        createdAt: 'created_at',
-        updatedAt: 'updated_at',
-    },
-});
+}, defaultSchemaOptions);
 
 const TagModel = mongoose.model('Tag', TagSchema);
 module.exports = TagModel;

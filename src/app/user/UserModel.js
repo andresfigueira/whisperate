@@ -1,8 +1,9 @@
 const validator = require('validator');
-const mongoose = require('../../config/db/db.config');
+const mongoose = require('../../config/db');
 const SuperEncrypterService = require('../../shared/services/super-encrypter/SuperEncrypterService');
 const InternalServerError = require('../../../core/errors/InternalServerError');
 const { roles } = require('./constants');
+const { defaultSchemaOptions } = require('../../shared/services/entity/Entity.helper');
 
 const UserSchema = new mongoose.Schema({
     _id: {
@@ -66,12 +67,7 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'SessionToken',
     },
-}, {
-    timestamps: {
-        createdAt: 'created_at',
-        updatedAt: 'updated_at',
-    },
-});
+}, defaultSchemaOptions);
 
 UserSchema.virtual('fullName')
     .get(function data() { return `${this.first_name} ${this.last_name}`; });

@@ -1,4 +1,5 @@
-const mongoose = require('../../config/db/db.config');
+const mongoose = require('../../config/db');
+const { defaultSchemaOptions } = require('../../shared/services/entity/Entity.helper');
 
 const CommentSchema = new mongoose.Schema({
     _id: {
@@ -20,12 +21,7 @@ const CommentSchema = new mongoose.Schema({
         ref: 'User',
         required: 'Required',
     },
-}, {
-    timestamps: {
-        createdAt: 'created_at',
-        updatedAt: 'updated_at',
-    },
-});
+}, defaultSchemaOptions);
 
 const CommentModel = mongoose.model('Comment', CommentSchema);
 module.exports = CommentModel;
