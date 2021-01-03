@@ -1,16 +1,15 @@
 const UserCreateService = require('./services/UserCreateService');
-const UserId = require('./value-objects/UserId');
 const UserLoginService = require('./services/UserLoginService');
 const SessionHandlerService = require('../../session/services/SessionHandlerService');
 const Assert = require('../../shared/services/assert/Assert');
 const Response = require('../../../core/response/Response');
 const UserUpdateService = require('./services/UserUpdateService');
 const SessionTokenCreateService = require('../session-token/services/SessionTokenCreateService');
-const SessionTokenId = require('../session-token/value-objects/SessionTokenId');
 const BadRequest = require('../../../core/errors/BadRequest');
 const InternalServerError = require('../../../core/errors/InternalServerError');
 const UserModel = require('./UserModel');
 const NotFound = require('../../../core/errors/NotFound');
+const { getObjectId } = require('../../shared/services/entity/Entity.helper');
 
 const UserController = {
     create: async (req, res, next) => {
@@ -44,7 +43,7 @@ const UserController = {
                 birthday,
                 country,
             } = req.body;
-            const id = UserId();
+            const id = getObjectId();
             const user = new UserCreateService(
                 id,
                 firstName,
@@ -65,6 +64,7 @@ const UserController = {
     },
     login: async (req, res, next) => {
         try {
+            console.log(req.cookies);
             const assert = new Assert(req.body, {
                 identifier: {
                     required: true,
@@ -87,7 +87,7 @@ const UserController = {
             await session.start();
             const token = session.getCookie();
             const sessionTokenCreateService = new SessionTokenCreateService(
-                SessionTokenId(),
+                getObjectId(),
                 token,
                 user._id,
             );

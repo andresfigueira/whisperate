@@ -1,7 +1,5 @@
 const VoteModel = require('../VoteModel');
-const WhisperUpdateService = require('../../whisper/services/WhisperUpdateService');
 const WhisperModel = require('../../whisper/WhisperModel');
-const VoteId = require('../value-objects/VoteId');
 const InternalServerError = require('../../../../core/errors/InternalServerError');
 
 class VoteWhisperService {
@@ -35,17 +33,22 @@ class VoteWhisperService {
 
     async voteForWhisper() {
         const query = { _id: this.whisperId };
-        const update = { $set: { 'votes.score': this.score } };
+        const update = { $set: { 'votes.$.score': this.score } };
         const options = {
-            new: true,
+            // new: true,
         };
         // Find and update vote in whisper model
         // https://docs.mongodb.com/manual/reference/method/db.collection.update/#update-arrayfilters
 
-        await WhisperModel.update(query, update, options, (err) => {
-            console.log(err);
-            if (err) { throw new InternalServerError('Cannot update whisper while voting'); }
-        });
+        // await WhisperModel.updateOne(query, update, options, (err) => {
+        //     console.log(err);
+        //     if (err) { throw new InternalServerError('Cannot update whisper while voting'); }
+        // });
+
+        const query2 = { 'votes.score': 1 };
+        const v = await WhisperModel.find(query2).populate('votes').exec();
+
+        console.log(v);
 
         // whisper.votes_count += 1;
         // whisper.votes.push(this.voteUpdated._id);

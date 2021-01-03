@@ -1,6 +1,4 @@
 const WhisperModel = require('./WhisperModel');
-const WhisperId = require('./value-objects/WhisperId');
-const mongoose = require('../../config/db/db.config');
 const Assert = require('../../shared/services/assert/Assert');
 const Response = require('../../../core/response/Response');
 const getCurrentUser = require('../../session/helpers/getCurrentUser');
@@ -9,7 +7,7 @@ const NotFound = require('../../../core/errors/NotFound');
 const Forbidden = require('../../../core/errors/Forbidden');
 const WhisperCreateService = require('./services/WhisperCreateService');
 const WhisperDeleteService = require('./services/WhisperDeleteService');
-const UserId = require('../user/value-objects/UserId');
+const { getObjectId } = require('../../shared/services/entity/Entity.helper');
 
 const WhisperController = {
     all: async (req, res, next) => {
@@ -22,7 +20,7 @@ const WhisperController = {
                 ...filters
             } = req.query;
             const whispers = await WhisperModel
-                .find({ ...filters })
+                .find(filters)
                 .sort({ [sortBy]: sortDirection })
                 .limit(max)
                 .skip(max * page)
@@ -65,13 +63,13 @@ const WhisperController = {
                 throw new BadRequest(Response.error(assert.invalidMessage, assert.errors));
             }
 
-            const id = WhisperId();
+            const id = getObjectId();
             const { _id: userId } = getCurrentUser(req);
             const whisper = new WhisperCreateService(
                 id,
                 req.body.text,
                 !!req.body.private,
-                UserId(userId),
+                getObjectId(userId),
             );
 
             const response = await whisper.save();

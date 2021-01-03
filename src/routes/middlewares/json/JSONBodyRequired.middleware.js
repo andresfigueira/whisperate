@@ -1,8 +1,8 @@
-const ObjectHelper = require('../../../shared/helpers/Object.helper');
+const { isEmpty } = require('lodash');
 const BadRequest = require('../../../../core/errors/BadRequest');
 
 function JSONBodyRequired(req, res, next) {
-    if (req.is('application/json') && ObjectHelper.isEmpty(req.body)) {
+    if (req.is('application/json') && isEmpty(req.body)) {
         throw new BadRequest('Request must have a JSON body');
     }
 

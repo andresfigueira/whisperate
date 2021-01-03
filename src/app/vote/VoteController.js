@@ -5,9 +5,7 @@ const BadRequest = require('../../../core/errors/BadRequest');
 const NotFound = require('../../../core/errors/NotFound');
 const WhisperModel = require('../whisper/WhisperModel');
 const VoteWhisperService = require('./services/VoteWhisperService');
-const VoteId = require('./value-objects/VoteId');
-const WhisperId = require('../whisper/value-objects/WhisperId');
-const UserId = require('../user/value-objects/UserId');
+const { getObjectId } = require('../../shared/services/entity/Entity.helper');
 
 const VoteController = {
     vote: async (req, res, next) => {
@@ -31,14 +29,12 @@ const VoteController = {
             const user = getCurrentUser(req);
             const vote = new VoteWhisperService(
                 req.body.score,
-                WhisperId(whisper._id),
-                UserId(user._id),
+                getObjectId(whisper._id),
+                getObjectId(user._id),
             );
             await vote.save();
 
-            console.log(vote.whisper);
-
-            res.status(200).send(vote.whisper);
+            res.status(200).send(null);
         } catch (error) {
             next(error);
         }

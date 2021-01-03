@@ -1,4 +1,4 @@
-const ObjectHelper = require('../../helpers/Object.helper');
+const { isEmpty } = require('lodash');
 
 class Assert {
     constructor(params, constraints) {
@@ -42,7 +42,7 @@ class Assert {
         });
 
         this.errors = errors;
-        this.valid = ObjectHelper.isEmpty(errors);
+        this.valid = isEmpty(errors);
 
         return this.valid;
     }

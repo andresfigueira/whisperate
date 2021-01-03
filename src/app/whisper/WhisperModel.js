@@ -1,5 +1,5 @@
 const mongoose = require('../../config/db/db.config');
-const WhisperTypes = require('./value-objects/WhisperTypes');
+const { WhisperTypes } = require('./constants');
 
 const WhisperSchema = new mongoose.Schema({
     _id: {

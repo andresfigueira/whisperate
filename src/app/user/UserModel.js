@@ -1,8 +1,8 @@
 const validator = require('validator');
 const mongoose = require('../../config/db/db.config');
 const SuperEncrypterService = require('../../shared/services/super-encrypter/SuperEncrypterService');
-const Roles = require('./value-objects/Roles');
 const InternalServerError = require('../../../core/errors/InternalServerError');
+const { roles } = require('./constants');
 
 const UserSchema = new mongoose.Schema({
     _id: {
@@ -14,6 +14,10 @@ const UserSchema = new mongoose.Schema({
         required: 'Required',
     },
     last_name: {
+        type: String,
+        required: 'Required',
+    },
+    username: {
         type: String,
         required: 'Required',
     },
@@ -33,11 +37,11 @@ const UserSchema = new mongoose.Schema({
     role: {
         type: String,
         enum: [
-            Roles.superadmin,
-            Roles.support,
-            Roles.user,
+            roles.superadmin,
+            roles.support,
+            roles.user,
         ],
-        default: Roles.user,
+        default: roles.user,
     },
     birthday: {
         type: Date,

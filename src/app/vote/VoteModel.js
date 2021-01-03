@@ -7,7 +7,7 @@ const VoteSchema = new mongoose.Schema({
     },
     score: {
         type: Number,
-        enum: [1, -1],
+        enum: [1, 0, -1],
         required: 'Required',
     },
     whisper: {

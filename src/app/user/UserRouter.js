@@ -6,11 +6,11 @@ const isAuthenticated = require('../../routes/middlewares/authentication/isAuthe
 const router = express.Router();
 
 function UserRouter(app) {
-    app.use('', router);
-    router.post('/v1/users', UserController.create);
-    router.patch('/v1/users', permit('superadmin'), UserController.update);
-    router.post('/v1/login', UserController.login);
-    router.delete('/v1/logout', isAuthenticated, UserController.logout);
+    app.use('/v1', router);
+    router.post('/users', UserController.create);
+    router.patch('/users', permit('superadmin'), UserController.update);
+    router.post('/login', UserController.login);
+    router.delete('/logout', isAuthenticated, UserController.logout);
 }
 
 module.exports = UserRouter;

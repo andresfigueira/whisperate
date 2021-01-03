@@ -11,14 +11,10 @@ class UserLoginService {
 
     async login() {
         const user = await UserModel.findOne({ email: this.identifier }).exec();
-        if (!user) {
-            throw new NotFound();
-        }
+        if (!user) { throw new NotFound(); }
 
         const match = await SuperEncrypterService.compare(this.password, user.password);
-        if (!match) {
-            throw new Unauthorized('Invalid credentials');
-        }
+        if (!match) { throw new Unauthorized('Invalid credentials'); }
 
         return user;
     }

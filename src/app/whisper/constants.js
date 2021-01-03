@@ -3,4 +3,6 @@ const WhisperTypes = {
     question: 'question',
 };
 
-module.exports = WhisperTypes;
+module.exports = {
+    WhisperTypes,
+};
