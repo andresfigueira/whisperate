@@ -26,17 +26,14 @@ class Assert {
             if (required && (value === undefined || value === null || value === '')) {
                 errors[name] = {
                     errorMessage: requiredMessage || 'Required',
-                    required: requiredMessage || 'Required',
                 };
             } else if (pattern && !pattern.test(value)) {
                 errors[name] = {
                     errorMessage: patternMessage || 'Incorrect format',
-                    pattern: patternMessage || 'Incorrect format',
                 };
             } else if (validate && !validate(value)) {
                 errors[name] = {
                     errorMessage: validateMessage || 'Invalid',
-                    validate: validateMessage || 'Invalid',
                 };
             }
         });

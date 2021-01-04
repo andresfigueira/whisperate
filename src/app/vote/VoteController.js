@@ -6,6 +6,7 @@ const NotFound = require('../../../core/errors/NotFound');
 const WhisperModel = require('../whisper/WhisperModel');
 const VoteWhisperService = require('./services/VoteWhisperService');
 const { getObjectId } = require('../../shared/services/entity/Entity.helper');
+const { scoreEnum } = require('./constants');
 
 const VoteController = {
     vote: async (req, res, next) => {
@@ -14,16 +15,20 @@ const VoteController = {
                 id: req.params.id,
                 score: req.body.score,
             }, {
-                id: {
+                id: { required: true },
+                score: {
                     required: true,
+                    validate: (value) => scoreEnum.includes(Number(value)),
+                    validateMessage: 'Must be 1 or -1',
                 },
-
             });
             if (!assert.isValid()) {
                 throw new BadRequest(Response.error(assert.invalidMessage, assert.errors));
             }
 
-            const whisper = await WhisperModel.findOne({ _id: req.params.id }).exec();
+            const whisper = await WhisperModel
+                .findOne({ _id: req.params.id })
+                .exec();
             if (!whisper) { throw new NotFound('Whisper not found'); }
 
             const user = getCurrentUser(req);

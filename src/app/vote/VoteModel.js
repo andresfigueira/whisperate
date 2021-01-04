@@ -1,5 +1,6 @@
 const mongoose = require('../../config/db');
 const { defaultSchemaOptions } = require('../../shared/services/entity/Entity.helper');
+const { scoreEnum } = require('./constants');
 
 const VoteSchema = new mongoose.Schema({
     _id: {
@@ -8,18 +9,22 @@ const VoteSchema = new mongoose.Schema({
     },
     score: {
         type: Number,
-        enum: [1, 0, -1],
+        enum: scoreEnum,
         required: 'Required',
     },
-    whisper: {
+    whisper_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Whisper',
         required: 'Required',
     },
-    user: {
+    user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: 'Required',
+    },
+    active: {
+        type: Boolean,
+        default: true,
     },
 }, defaultSchemaOptions);
 
