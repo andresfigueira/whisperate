@@ -12,11 +12,11 @@ const TagSchema = new mongoose.Schema({
         required: 'Required',
         maxlength: 128,
     },
-    whispers: [{
+    user_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Whisper',
+        ref: 'User',
         required: 'Required',
-    }],
+    },
 }, defaultSchemaOptions);
 
 const TagModel = mongoose.model('Tag', TagSchema);

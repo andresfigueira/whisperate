@@ -1,27 +1,22 @@
 const VoteModel = require('../VoteModel');
-const WhisperModel = require('../../whisper/WhisperModel');
 const InternalServerError = require('../../../../core/errors/InternalServerError');
-const NotFound = require('../../../../core/errors/NotFound');
 const { getObjectId } = require('../../../shared/services/entity/Entity.helper');
 
 class VoteWhisperService {
     constructor(
         score,
-        whisperId,
+        whisper,
         userId,
     ) {
         this.score = score;
-        this.whisperId = whisperId;
+        this.whisperId = getObjectId(whisper?._id);
         this.userId = userId;
         this.vote = null;
         this.previousVote = null;
-        this.whisper = null;
+        this.whisper = whisper;
     }
 
     async save() {
-        this.whisper = await WhisperModel.findById(this.whisperId);
-        if (!this.whisper) { throw new NotFound(); }
-
         // Already voted same score
         const query = { whisper_id: this.whisperId, user_id: this.userId };
         this.previousVote = await VoteModel.findOne(query).sort({ created_at: -1 });
@@ -43,7 +38,8 @@ class VoteWhisperService {
             user_id: this.userId,
             active: true,
         };
-        this.vote = await VoteModel.create(data);
+        this.vote = new VoteModel(data);
+        await this.vote.save();
 
         await this.voteForWhisper();
     }

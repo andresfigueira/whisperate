@@ -11,10 +11,7 @@ const { scoreEnum } = require('./constants');
 const VoteController = {
     vote: async (req, res, next) => {
         try {
-            const assert = new Assert({
-                id: req.params.id,
-                score: req.body.score,
-            }, {
+            const assert = new Assert({ ...req.body, id: req.params.id }, {
                 id: { required: true },
                 score: {
                     required: true,
@@ -34,7 +31,7 @@ const VoteController = {
             const user = getCurrentUser(req);
             const vote = new VoteWhisperService(
                 req.body.score,
-                getObjectId(whisper._id),
+                whisper,
                 getObjectId(user._id),
             );
             await vote.save();

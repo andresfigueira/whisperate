@@ -9,14 +9,18 @@ const CommentSchema = new mongoose.Schema({
     text: {
         type: String,
         required: 'Required',
-        maxlength: 1024,
+        maxlength: 8192,
     },
-    whisper: {
+    anonymous: {
+        type: Boolean,
+        default: false,
+    },
+    whisper_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Whisper',
         required: 'Required',
     },
-    user: {
+    user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: 'Required',

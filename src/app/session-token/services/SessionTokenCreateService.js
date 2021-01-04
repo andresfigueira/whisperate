@@ -15,7 +15,7 @@ class SessionTokenCreateService {
         const sessionToken = new SessionTokenModel({
             _id: this.id,
             token: this.token,
-            user: this.userId,
+            user_id: this.userId,
         });
 
         const response = await sessionToken.save();

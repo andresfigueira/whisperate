@@ -20,7 +20,7 @@ const WhisperController = {
                 ...filters
             } = req.query;
             const whispers = await WhisperModel
-                .find(filters)
+                .find({ ...filters })
                 .sort({ [sortBy]: sortDirection })
                 .limit(max)
                 .skip(max * page)
@@ -56,21 +56,23 @@ const WhisperController = {
             const assert = new Assert(req.body, {
                 title: { required: true },
                 body: { required: true },
+                is_private: { type: Boolean },
             });
             if (!assert.isValid()) {
                 throw new BadRequest(Response.error(assert.invalidMessage, assert.errors));
             }
 
             const { _id: userId } = getCurrentUser(req);
-            const whisper = new WhisperCreateService({
-                id: getObjectId(),
+            const whisper = new WhisperModel({
+                _id: getObjectId(),
                 title: req.body.title,
                 body: req.body.body,
-                isPrivate: !!req.body.is_private,
-                userId: getObjectId(userId),
+                type: req.body.type,
+                is_private: req.body.is_private,
+                user_id: userId,
             });
-
             const response = await whisper.save();
+
             res.status(200).send(response);
         } catch (error) {
             next(error);

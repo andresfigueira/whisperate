@@ -42,27 +42,15 @@ const WhisperSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    anonymous: {
+        type: Boolean,
+        default: false,
+    },
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: 'Required',
     },
-    // tags: [{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Tag',
-    //     required: 'Required',
-    // }],
-    // votes: [{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Vote',
-    // }],
-    // comments: [{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Comment',
-    // }],
-    // files: [{
-    //     url: { type: String, required: true },
-    // }],
 }, defaultSchemaOptions);
 
 const WhisperModel = mongoose.model('Whisper', WhisperSchema);

@@ -51,18 +51,10 @@ const UserSchema = new mongoose.Schema({
     country: {
         type: String,
     },
-    whispers: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Whisper',
-    }],
-    votes: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Vote',
-    }],
-    comments: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Comment',
-    }],
+    is_private: {
+        type: Boolean,
+        default: false,
+    },
     session_token: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'SessionToken',
