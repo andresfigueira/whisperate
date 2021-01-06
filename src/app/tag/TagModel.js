@@ -12,11 +12,6 @@ const TagSchema = new mongoose.Schema({
         required: 'Required',
         maxlength: 128,
     },
-    user_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: 'Required',
-    },
 }, defaultSchemaOptions);
 
 const TagModel = mongoose.model('Tag', TagSchema);

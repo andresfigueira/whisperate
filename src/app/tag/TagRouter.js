@@ -6,9 +6,8 @@ const router = express.Router();
 
 function TagRouter(app) {
     app.use('/v1', router);
-    router.get('/tags/:name', /* permit('user'), */ TagController.all);
-    router.post('/tags', /* permit('user'), */ TagController.comment);
-    router.delete('/tags/:id', /* permit('user'), */ TagController.delete);
+    router.get('/tags/:name', /* permit('user'), */ TagController.findWhispersByName);
+    router.post('/tags', /* permit('user'), */ TagController.create);
 }
 
 module.exports = TagRouter;

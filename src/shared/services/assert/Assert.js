@@ -46,6 +46,7 @@ class Assert {
                 validate,
                 validateMessage,
                 type,
+                maxLength,
             } = this.constraints[name];
             const value = this.params[name];
 
@@ -57,6 +58,10 @@ class Assert {
                 errors[name] = { errorMessage: patternMessage || 'Invalid format' };
             } else if (validate && !validate(value)) {
                 errors[name] = { errorMessage: validateMessage || 'Invalid' };
+            } else if (
+                value !== undefined && Number(maxLength) && String(value).length > maxLength
+            ) {
+                errors[name] = { errorMessage: `Max length: ${maxLength}` };
             }
         });
 

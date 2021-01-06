@@ -5,8 +5,6 @@ const getCurrentUser = require('../../session/helpers/getCurrentUser');
 const BadRequest = require('../../../core/errors/BadRequest');
 const NotFound = require('../../../core/errors/NotFound');
 const Forbidden = require('../../../core/errors/Forbidden');
-const WhisperCreateService = require('./services/WhisperCreateService');
-const WhisperDeleteService = require('./services/WhisperDeleteService');
 const { getObjectId } = require('../../shared/services/entity/Entity.helper');
 
 const WhisperController = {
@@ -97,7 +95,7 @@ const WhisperController = {
             const cannotDelete = userId !== whisper?.user_id?.toString();
             if (cannotDelete) { throw new Forbidden(); }
 
-            const remover = new WhisperDeleteService({ _id: id });
+            const remover = await WhisperModel.deleteOne({ _id: id });
             await remover.save();
 
             res.status(200).send();
