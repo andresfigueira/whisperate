@@ -1,10 +1,9 @@
-const TokenCookieName = require('../value-objects/TokenCookieName');
 const EncrypterService = require('../../shared/services/encrypter/EncrypterService');
 const InternalServerError = require('../../../core/errors/InternalServerError');
+const { tokenSessionName } = require('../constants');
 
 function getCurrentUser(req) {
-    const tokenCookieName = TokenCookieName();
-    const token = req.cookies[tokenCookieName];
+    const token = req.cookies[tokenSessionName];
     const userString = EncrypterService.decrypt(token);
 
     if (!userString) {
